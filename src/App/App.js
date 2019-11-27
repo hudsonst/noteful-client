@@ -5,7 +5,6 @@ import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
-import dummyStore from '../dummy-store';
 import NoteContext from '../NoteContext';
 import './App.css';
 
@@ -16,12 +15,33 @@ class App extends Component {
     };
 
     componentDidMount() {
-        // fake date loading from API call
-        setTimeout(() => this.setState(dummyStore), 600);
+
+        fetch('http://localhost:9090/folders')
+         .then(response => {
+             if (!response.ok) {
+                 throw new Error ('Something went wrong fetching folders');
+             }
+             return response
+         })
+         .then(response => response.json())
+         .then(data => {
+             this.setState({folders: data})
+         })
+
+         fetch('http://localhost:9090/notes')
+         .then(response => {
+             if (!response.ok) {
+                 throw new Error ('Something went wrong fetching notes');
+             }
+             return response
+         })
+         .then(response => response.json())
+         .then(data => {
+             this.setState({notes: data})
+         })
     }
 
     renderNavRoutes() {
-       // const {notes, folder} = this.state;
         const contextValue = {
             notes: this.state.notes,
             folders: this.state.folders,
