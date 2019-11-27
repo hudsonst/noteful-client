@@ -14,6 +14,13 @@ class App extends Component {
         folders: []
     };
 
+    deleteNoteFromState = noteId => {
+    const newNotes = this.state.notes.filter(note =>
+       note.id !== noteId)
+    this.setState({
+       notes: newNotes
+    })}
+
     componentDidMount() {
 
         fetch('http://localhost:9090/folders')
@@ -42,12 +49,8 @@ class App extends Component {
     }
 
     renderNavRoutes() {
-        const contextValue = {
-            notes: this.state.notes,
-            folders: this.state.folders,
-            }
         return (
-        <NoteContext.Provider value={contextValue}>
+       // <NoteContext.Provider value={contextValue}>
             <>
                 {['/', '/folder/:folderId'].map(path => (
                     <Route
@@ -65,17 +68,14 @@ class App extends Component {
                 <Route path="/add-folder" component={NotePageNav} />
                 <Route path="/add-note" component={NotePageNav} />
             </>
-      </NoteContext.Provider>
+     // </NoteContext.Provider>
         );
     }
 
     renderMainRoutes() {
-        const contextValue = {
-            notes: this.state.notes,
-            folder: this.state.folder
-            }
+
         return (
-        <NoteContext.Provider value={contextValue}>
+        //<NoteContext.Provider value={contextValue}>
             <>
                 {['/', '/folder/:folderId'].map(path => (
                     <Route
@@ -89,12 +89,18 @@ class App extends Component {
                     path="/note/:noteId"
                     component={NotePageMain} />
             </>
-        </NoteContext.Provider>
+        //</NoteContext.Provider>
         );
     }
 
     render() {
+        const contextValue = {
+            notes: this.state.notes,
+            folders: this.state.folders,
+            deleteNoteFromState: this.deleteNoteFromState,
+            }
         return (
+            <NoteContext.Provider value={contextValue}>
             <div className="App">
                 <nav className="App__nav">{this.renderNavRoutes()}</nav>
                 <header className="App__header">
@@ -105,6 +111,7 @@ class App extends Component {
                 </header>
                 <main className="App__main">{this.renderMainRoutes()}</main>
             </div>
+            </NoteContext.Provider>
         );
     }
 }
