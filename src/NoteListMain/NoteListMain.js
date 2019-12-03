@@ -5,7 +5,8 @@ import Note from '../Note/Note'
 import CircleButton from '../CircleButton/CircleButton'
 import {getNotesForFolder} from '../notes-helpers';
 import NoteContext from '../NoteContext';
-import './NoteListMain.css'
+import './NoteListMain.css';
+import RemoveErrors from '../removeErrors'
 
 export default class NoteListMain extends Component {
   static contextType = NoteContext;
@@ -20,11 +21,13 @@ export default class NoteListMain extends Component {
       <ul>
         {notesForFolder.map(note =>
           <li key={note.id}>
+            <RemoveErrors>
             <Note
               id={note.id}
               name={note.name}
               modified={note.modified}
             />
+            </RemoveErrors>
           </li>
         )}
       </ul>

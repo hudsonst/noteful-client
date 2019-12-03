@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NoteContext from '../NoteContext'
+import PropTypes from 'prop-types';
 import './Note.css'
 
-function deleteNote(noteId, callback) {
+function deleteNote(noteId, cb) {
   fetch(`http://localhost:9090/notes/${noteId}`, {
     method: 'DELETE',
     headers: {
@@ -15,15 +16,14 @@ function deleteNote(noteId, callback) {
  .then(response => {
      if (!response.ok) {
          throw new Error ('Something went wrong deleting this note');
-     }
-     return response})
- .then(response => response.json())
- .then(callback(noteId))
+     }})
+ .then(cb(noteId))
  .catch(error => {
     console.error(error)})
 }
 
 export default function Note(props) {
+
   return (
     <NoteContext.Consumer>
     {(context) => (
@@ -33,15 +33,17 @@ export default function Note(props) {
           {props.name}
         </Link>
       </h2>
-      <button className='Note__delete' type='button' 
-        onClick={() => {
+      <Link to='/'>
+         <button className='Note__delete' type='button' 
+           onClick={() => {
            deleteNote(
             props.id,
             context.deleteNoteFromState)}}>
-        <FontAwesomeIcon icon='trash-alt' />
+         <FontAwesomeIcon icon='trash-alt' />
         {' '}
         remove
-      </button>
+          </button>
+      </Link>
       <div className='Note__dates'>
         <div className='Note__dates-modified'>
           Modified
@@ -55,3 +57,10 @@ export default function Note(props) {
   </NoteContext.Consumer>
   )
 }
+
+Note.propTypes = {
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  modified: PropTypes.string.isRequired
+}
+

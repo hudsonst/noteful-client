@@ -7,6 +7,10 @@ import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import NoteContext from '../NoteContext';
 import './App.css';
+import AddFolder from '../AddFolder/AddFolder';
+import AddNote from '../AddNote/AddNote';
+import AddErrors from '../addErrors';
+import RemoveErrors from '../removeErrors';
 
 class App extends Component {
     state = {
@@ -20,6 +24,18 @@ class App extends Component {
     this.setState({
        notes: newNotes
     })}
+
+    addFolder = folder => {
+        this.setState({
+          folders: [ ...this.state.folders, folder ],
+        })
+    }
+
+    addNote = note => {
+        this.setState({
+          notes: [ ...this.state.notes, note ],
+        })
+      }
 
     componentDidMount() {
 
@@ -50,7 +66,6 @@ class App extends Component {
 
     renderNavRoutes() {
         return (
-       // <NoteContext.Provider value={contextValue}>
             <>
                 {['/', '/folder/:folderId'].map(path => (
                     <Route
@@ -65,17 +80,16 @@ class App extends Component {
                     path="/note/:noteId"
                     component={NotePageNav}
                 />
-                <Route path="/add-folder" component={NotePageNav} />
-                <Route path="/add-note" component={NotePageNav} />
+                <AddErrors>
+                <Route path="/add-folder" component={AddFolder} />
+                </AddErrors>
             </>
-     // </NoteContext.Provider>
         );
     }
 
     renderMainRoutes() {
 
         return (
-        //<NoteContext.Provider value={contextValue}>
             <>
                 {['/', '/folder/:folderId'].map(path => (
                     <Route
@@ -85,11 +99,15 @@ class App extends Component {
                         component={NoteListMain}
                                 />
                 ))}
+                <RemoveErrors>
                 <Route
                     path="/note/:noteId"
                     component={NotePageMain} />
+                </RemoveErrors>
+            <AddErrors>
+            <Route path="/add-note" component={AddNote} />
+            </AddErrors>
             </>
-        //</NoteContext.Provider>
         );
     }
 
@@ -98,6 +116,8 @@ class App extends Component {
             notes: this.state.notes,
             folders: this.state.folders,
             deleteNoteFromState: this.deleteNoteFromState,
+            addFolder: this.addFolder,
+            addNote: this.addNote
             }
         return (
             <NoteContext.Provider value={contextValue}>

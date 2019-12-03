@@ -1,10 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import './CircleButton.css'
 
 export default function NavCircleButton(props) {
   const { tag, className, childrenm, ...otherProps } = props
-
-  return React.createElement(
+  return( React.createElement(
     props.tag,
     {
       className: ['NavCircleButton', props.className].join(' '),
@@ -12,6 +12,14 @@ export default function NavCircleButton(props) {
     },
     props.children
   )
+  )
+}
+
+NavCircleButton.propTypes = {
+  tag: PropTypes.string.isRequired,
+  className: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 }
 
 NavCircleButton.defaultProps ={
