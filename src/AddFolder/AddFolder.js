@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NoteContext from '../NoteContext';
+import ValidationError from '../ValidationError'
 
 
 class AddFolder extends Component {
@@ -7,14 +8,29 @@ class AddFolder extends Component {
 
 state = {
     error: null,
+    name: { 
+      value: '',
+      touched: false
+    },
   }
 
+updateName(name) {
+    this.setState({name: {value: name},
+        touched: true
+    });
+  }
+
+validateName() {
+    const name = this.state.name.value.trim();
+    if (name.length === 0) {
+      return 'Name is required';
+    } 
+  }
 
 handleSubmit = e => {
     e.preventDefault()
-    const { name } = e.target
     const folder = {
-      name: name.value
+       name: this.state.name.value,
     }
     this.setState({ error: null })
     fetch('http://localhost:9090/folders', {
@@ -55,14 +71,18 @@ handleSubmit = e => {
          <form className='AddFolder_Form' onSubmit={this.handleSubmit}>
             <div>
                 <label htmlFor='name'>Name {' '}</label>
-                <input type='text' id='name' />
+                <input type='text' id='name' onChange={ e => this.updateName(e.target.value)}/>
+                {!this.state.name.touched && (
+                <ValidationError message={this.validateName()} />
+                 )}
             </div>
           <div className='AddFolder__buttons'>
             <button type='button' onClick={this.handleClickCancel}>
               Cancel
             </button>
             {' '}
-            <button type='submit'>
+            <button type='submit' disabled={
+              this.validateName()}>
               Add
             </button>
          </div>

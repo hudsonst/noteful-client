@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NoteContext from '../NoteContext';
 import ValidationError from '../ValidationError';
-import PropTypes from 'prop-types';
 import './AddNote.css';
 import Errors from '../addErrors';
 
@@ -120,8 +119,3 @@ handleSubmit = e => {
 }
 
  export default AddNote;
-
- AddNote.propTypes = {
-     name: PropTypes.string.isRequired,
-     content: PropTypes.string.isRequired
- }
