@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import React, { Component } from 'react';
+import { Route, Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import NoteListNav from '../NoteListNav/NoteListNav';
 import NotePageNav from '../NotePageNav/NotePageNav';
 import NoteListMain from '../NoteListMain/NoteListMain';
@@ -18,70 +18,71 @@ class App extends Component {
         folders: []
     };
 
-    deleteNoteFromState = noteId => {
-    const newNotes = this.state.notes.filter(note =>
-       note.id !== noteId)
-    this.setState({
-       notes: newNotes
-    })}
+    deleteNoteFromState = note_id => {
+        const newNotes = this.state.notes.filter(note =>
+            note.id !== note_id)
+        this.setState({
+            notes: newNotes
+        })
+    }
 
     addFolder = folder => {
         this.setState({
-          folders: [ ...this.state.folders, folder ],
+            folders: [...this.state.folders, folder],
         })
     }
 
     addNote = note => {
         this.setState({
-          notes: [ ...this.state.notes, note ],
+            notes: [...this.state.notes, note],
         })
-      }
+    }
 
     componentDidMount() {
 
-        fetch('http://localhost:9090/folders')
-         .then(response => {
-             if (!response.ok) {
-                 throw new Error ('Something went wrong fetching folders');
-             }
-             return response
-         })
-         .then(response => response.json())
-         .then(data => {
-             this.setState({folders: data})
-         })
+        fetch('http://localhost:8000/api/folders')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Something went wrong fetching folders');
+                }
+                return response
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ folders: data })
+            })
 
-         fetch('http://localhost:9090/notes')
-         .then(response => {
-             if (!response.ok) {
-                 throw new Error ('Something went wrong fetching notes');
-             }
-             return response
-         })
-         .then(response => response.json())
-         .then(data => {
-             this.setState({notes: data})
-         })
+        fetch('http://localhost:8000/api/notes')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Something went wrong fetching notes');
+                }
+                return response
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ notes: data })
+            })
     }
 
     renderNavRoutes() {
         return (
             <>
-                {['/', '/folder/:folderId'].map(path => (
+                {['/', '/folder/:folder_id'].map(path => (
                     <Route
                         exact
                         key={path}
                         path={path}
                         component={NoteListNav}
-                            />
-                        )
+                    />
+                )
                 )}
                 <Route
-                    path="/note/:noteId"
+                    path="/note/:note_id"
                     component={NotePageNav}
                 />
                 <AddErrors>
-                <Route path="/add-folder" component={AddFolder} />
+                    <Route path="/add-folder" component={AddFolder} />
                 </AddErrors>
             </>
         );
@@ -91,22 +92,21 @@ class App extends Component {
 
         return (
             <>
-                {['/', '/folder/:folderId'].map(path => (
+                {['/', '/folder/:folder_id'].map(path => (
                     <Route
                         exact
                         key={path}
                         path={path}
-                        component={NoteListMain}
-                                />
+                        render={(props) => <NoteListMain {...props} folder_id={props.folder_id}/>}
+                    />
                 ))}
                 <RemoveErrors>
-                <Route
-                    path="/note/:noteId"
-                    component={NotePageMain} />
+                    <Route
+                        path="/note/:note_id" component={NotePageMain} />
                 </RemoveErrors>
-            <AddErrors>
-            <Route path="/add-note" component={AddNote} />
-            </AddErrors>
+                <AddErrors>
+                    <Route path="/add-note" component={AddNote} />
+                </AddErrors>
             </>
         );
     }
@@ -118,19 +118,19 @@ class App extends Component {
             deleteNoteFromState: this.deleteNoteFromState,
             addFolder: this.addFolder,
             addNote: this.addNote
-            }
+        }
         return (
             <NoteContext.Provider value={contextValue}>
-            <div className="App">
-                <nav className="App__nav">{this.renderNavRoutes()}</nav>
-                <header className="App__header">
-                    <h1>
-                        <Link to="/">Noteful</Link>{' '}
-                        <FontAwesomeIcon icon="check-double" />
-                    </h1>
-                </header>
-                <main className="App__main">{this.renderMainRoutes()}</main>
-            </div>
+                <div className="App">
+                    <nav className="App__nav">{this.renderNavRoutes()}</nav>
+                    <header className="App__header">
+                        <h1>
+                            <Link to="/">Noteful</Link>{' '}
+                            <FontAwesomeIcon icon="check-double" />
+                        </h1>
+                    </header>
+                    <main className="App__main">{this.renderMainRoutes()}</main>
+                </div>
             </NoteContext.Provider>
         );
     }

@@ -4,7 +4,8 @@ import toJson from 'enzyme-to-json'
 import NoteListNav from './NoteListNav'
 
 describe(`NoteListNav component`, () => {
-  const props = {
+//  const props = {
+    const context = {
     notes: [
       {
         "id": "cbc787a0-ffaf-11e8-8eb2-f2801f1b9fd1",
@@ -57,7 +58,7 @@ describe(`NoteListNav component`, () => {
   })
 
   it('renders a link in ul for each folder in array', () => {
-    const ul = shallow(<NoteListNav {...props} />)
+    const ul = shallow(<NoteListNav />, { context })
       .find('ul')
     expect(toJson(ul)).toMatchSnapshot()
   })

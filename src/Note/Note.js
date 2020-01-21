@@ -6,8 +6,8 @@ import NoteContext from '../NoteContext'
 import PropTypes from 'prop-types';
 import './Note.css'
 
-function deleteNote(noteId, cb) {
-  fetch(`http://localhost:9090/notes/${noteId}`, {
+function deleteNote(note_id, cb) {
+  fetch(`http://localhost:8000/notes/${note_id}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json'
@@ -17,7 +17,7 @@ function deleteNote(noteId, cb) {
      if (!response.ok) {
          throw new Error ('Something went wrong deleting this note');
      }})
- .then(cb(noteId))
+ .then(cb(note_id))
  .catch(error => {
     console.error(error)})
 }
@@ -29,7 +29,9 @@ export default function Note(props) {
     {(context) => (
     <div className='Note'>
       <h2 className='Note__title'>
-        <Link to={`/note/${props.id}`}>
+        <Link to={{
+          pathname: `/note/${props.id}`,
+          state: { id: props.id }}}>
           {props.name}
         </Link>
       </h2>
@@ -59,7 +61,7 @@ export default function Note(props) {
 }
 
 Note.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   modified: PropTypes.string.isRequired
 }

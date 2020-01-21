@@ -33,7 +33,7 @@ handleSubmit = e => {
        name: this.state.name.value,
     }
     this.setState({ error: null })
-    fetch('http://localhost:9090/folders', {
+    fetch('http://localhost:8000/api/folders', {
       method: 'POST',
       body: JSON.stringify(folder),
       headers: {

@@ -43,12 +43,12 @@ handleSubmit = e => {
     const note = {
       name: this.state.name.value,
       modified: new Date(),
-      folderId: folder.value,
+      folder_id: folder.value,
       content: content.value,
     }
     this.setState({ error: null })
 
-    fetch('http://localhost:9090/notes', {
+    fetch('http://localhost:8000/api/notes', {
       method: 'POST',
       body: JSON.stringify(note),
       headers: {
