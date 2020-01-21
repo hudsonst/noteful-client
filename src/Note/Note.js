@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import './Note.css'
 
 function deleteNote(note_id, cb) {
-  fetch(`http://localhost:8000/notes/${note_id}`, {
+  fetch(`http://localhost:8000/api/notes/${note_id}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json'
