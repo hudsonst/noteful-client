@@ -63,6 +63,6 @@ export default function Note(props) {
 Note.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  modified: PropTypes.string.isRequired
+  modified: PropTypes.instanceOf(Date).isRequired
 }
 

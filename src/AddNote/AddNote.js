@@ -3,6 +3,7 @@ import NoteContext from '../NoteContext';
 import ValidationError from '../ValidationError';
 import './AddNote.css';
 import Errors from '../addErrors';
+import config from '../config';
 
 class AddNote extends Component {
     static contextType = NoteContext;
@@ -48,7 +49,7 @@ handleSubmit = e => {
     }
     this.setState({ error: null })
 
-    fetch('http://localhost:8000/api/notes', {
+    fetch(`${config.API_ENDPOINT}/api/notes`, {
       method: 'POST',
       body: JSON.stringify(note),
       headers: {

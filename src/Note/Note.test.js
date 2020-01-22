@@ -5,7 +5,7 @@ import Note from './Note'
 
 describe(`Note component`, () => {
   const props = {
-    id: 'a',
+    id: 1,
     name: 'test-class-name',
     modified: new Date(2018, 12, 15),
   }

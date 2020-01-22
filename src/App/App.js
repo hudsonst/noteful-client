@@ -11,6 +11,7 @@ import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
 import AddErrors from '../addErrors';
 import RemoveErrors from '../removeErrors';
+import config from '../config';
 
 class App extends Component {
     state = {
@@ -40,7 +41,7 @@ class App extends Component {
 
     componentDidMount() {
 
-        fetch('http://localhost:8000/api/folders')
+        fetch(`${config.API_ENDPOINT}/api/folders`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Something went wrong fetching folders');
@@ -52,7 +53,7 @@ class App extends Component {
                 this.setState({ folders: data })
             })
 
-        fetch('http://localhost:8000/api/notes')
+        fetch(`${config.API_ENDPOINT}/api/notes`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Something went wrong fetching notes');

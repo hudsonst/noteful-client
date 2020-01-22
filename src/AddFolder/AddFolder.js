@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NoteContext from '../NoteContext';
+import config from '../config';
 import ValidationError from '../ValidationError'
 
 
@@ -33,7 +34,7 @@ handleSubmit = e => {
        name: this.state.name.value,
     }
     this.setState({ error: null })
-    fetch('http://localhost:8000/api/folders', {
+    fetch(`${config.API_ENDPOINT}/api/folders`, {
       method: 'POST',
       body: JSON.stringify(folder),
       headers: {
