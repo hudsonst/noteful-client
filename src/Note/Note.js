@@ -2,12 +2,13 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import config from '../config'
 import NoteContext from '../NoteContext'
 import PropTypes from 'prop-types';
 import './Note.css'
 
 function deleteNote(note_id, cb) {
-  fetch(`http://localhost:8000/api/notes/${note_id}`, {
+  fetch(`${config.API_ENDPOINT}/api/notes/${note_id}`, {
     method: 'DELETE',
     headers: {
       'content-type': 'application/json'
